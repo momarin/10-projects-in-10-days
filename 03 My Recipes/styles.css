@@ -1,0 +1,212 @@
+/* Font Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap");
+
+/* ----------------------------------------------------- */
+/* GLOBAL RESET */
+* {
+  box-sizing: border-box;
+}
+/* ----------------------------------------------------- */
+/* GENERAL STYLES */
+body {
+  background: #ece9e6; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #ffffff,
+    #ece9e6
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #ece9e6
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+img {
+  max-width: 100%;
+}
+/* ----------------------------------------------------- */
+/* MOBILE CONTAINER */
+.mobile-container {
+  background-color: #fff;
+  width: 400px;
+  box-shadow: 0 0 10px 2px #3333331a;
+  border-radius: 3px;
+  overflow: hidden;
+  width: 400px;
+}
+.logo-container {
+    display: flex;
+    justify-content: center;
+    padding: .2rem;
+    padding-top: 1rem;
+}
+.logo {
+    max-width: 150px;
+    height: auto;
+}
+/* header */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+header input {
+    background-color: #efefef;
+    border: none;
+    border-radius: 3px;
+    padding: .5rem 1rem;
+    font-family: inherit;
+}
+header button {
+    background-color: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 1.5rem;
+    margin-left: 10px;
+}
+.fav-container {
+    background-color: #c9d6ff34;
+    padding: 0.1rem 1rem;
+    /* text-align: center; */
+}
+.fav-meals {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */ /* estava alinhando com texto, nao só com imagem */
+    list-style-type: none;
+    padding: 0;
+}
+.fav-meals li {
+    width: 85px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+.fav-meals li .clear{
+    background-color: transparent;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: 0;
+    border: none;
+    cursor: pointer;
+}
+.fav-meals li:hover .clear{
+    opacity: 1;
+}
+.fav-meals li img {
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #3333331a;
+    object-fit: cover;
+    height: 70px;
+    max-width: 70px;
+    margin: 0 auto;
+}
+.fav-meals li span {
+    font-size: .7rem;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 75px;
+}
+.meal {
+    border-radius: 3px;
+    box-shadow: 0 0 10px 2px #3333331a;
+    margin: 1.5rem;
+    overflow: hidden;
+    cursor: pointer;
+}
+.meal-header {
+    position: relative;
+}
+.meal-header .random {
+    position: absolute;
+    top: 1rem;
+    background-color: #fff;
+    padding: 0.25rem 1rem;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.meal-header img {
+    object-fit: cover;
+    height: 250px;
+    width: 100%;
+}
+.meal-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+.meal-body h4 {
+    margin: 0;
+}
+.meal-body .fav-btn {
+    border: none;
+    background-color: transparent;
+    font-size: 1.2rem;
+    color: rgba(128, 128, 128, 0.548);
+    cursor: pointer;
+}
+.meal-body .fav-btn.active {
+    color: red;
+}
+.meal-info h1 {
+    text-align: center;
+}
+.popup-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.popup-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.popup {
+    background-color: #fff;
+    padding: 0 2rem;
+    position: relative;
+    overflow: auto;
+    max-width: 400px;
+    max-height: 100vh;
+    width: 100%;
+    padding: 0 2rem;
+    border-radius: 5px;
+}
+.popup .close-popup {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    position: absolute;
+    cursor: pointer;
+    top: 1rem;
+    right: 1rem;
+}
+/* --------------------------------------------------------- */
+/* owl carousel */
+.owl-carousel .owl-item:not(.cloned) {
+  margin-right: 10px; /* Mantém a margem padrão entre itens */
+}
+
+.owl-carousel .owl-item:not(.cloned):last-child {
+  margin-right: 0 !important; /* Remove a margem do último item REAL (não dos clones) */
+}

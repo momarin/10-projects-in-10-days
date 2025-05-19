@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Recipe</title>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Owl Carousel CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Custom JS -->
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="mobile-container">
+      <div class="logo-container">
+        <img src="image/2178221.png" alt="Logo" class="logo" />
+      </div>
+      <header>
+        <input type="text" />
+        <button id="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </header>
+      <div class="fav-container">
+        <h3>Receitas favoritas</h3>
+        <ul class="owl-carousel owl-theme fav-meals">
+          <li class="item">
+            <img
+              src="https://www.themealdb.com/images/ingredients/lime.png"
+              alt=""
+            /><span>Limão</span>
+          </li>
+          <li class="item">
+            <img
+              src="https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg/medium"
+              alt=""
+            /><span>Carbonara</span>
+          </li>
+          <li class="item">
+            <img
+              src="https://www.themealdb.com/images/media/meals/lwsnkl1604181187.jpg"
+              alt=""
+            /><span>Chicken Steak Gourmet</span>
+          </li>
+          <li class="item">
+            <img
+              src="https://www.themealdb.com/images/ingredients/lime.png"
+              alt=""
+            /><span>Limão</span>
+          </li>
+          <li class="item">
+            <img
+              src="https://www.themealdb.com/images/ingredients/lime.png"
+              alt=""
+            /><span>Limão</span>
+          </li>
+          <li class="item">
+            <img
+              src="https://www.themealdb.com/images/ingredients/lime.png"
+              alt=""
+            /><span>Limão</span>
+          </li>
+        </ul>
+      </div>
+      <div class="meals" id="meals">
+        <!-- <div class="meal">
+          <div class="meal-header">
+            <span class="random">Receita aleatória</span>
+            <img
+              src="https://www.themealdb.com/images/media/meals/wqqvyq1511179730.jpg"
+              alt="macarrão com berbigão"
+            />
+          </div>
+          <div class="meal-body">
+            <h4>Macarrão com berbigão</h4>
+            <button class="fav-btn active">
+              <i class="fa-solid fa-heart"></i>
+            </button>
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- jQuery (Owl Carousel requer jQuery) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function() {
+  $(".fav-meals").owlCarousel({
+    loop: false,          // Loop infinito
+    margin: 10,          // Espaço entre itens
+    nav: false,           // Mostra setas de navegação
+    dots: false,
+    autoWidth:true, 
+    responsive: {        // Responsividade
+      0: {
+        items: 4         // 3 itens em telas pequenas
+      },
+      600: {
+        items: 4         // 4 itens em telas médias
+      },
+      1000: {
+        items: 5         // 5 itens em telas grandes
+      }
+    }
+  });
+});
+    </script>
+  </body>
+</html>
