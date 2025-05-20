@@ -1,0 +1,193 @@
+/* ----------------------------------------------------------------------- */
+// VARIÁVEIS GLOBAIS
+var refeicoesEl = documento.obterElementoPorId("meals");
+var favoritosContainer = documento.obterElementoPorId("fav-meals");
+var termoPesquisa = documento.obterElementoPorId("search-term");
+var botaoPesquisa = documento.obterElementoPorId("search");
+var popupRefeicao = documento.obterElementoPorId("meal-popup");
+var infoRefeicaoEl = documento.obterElementoPorId("meal-info");
+var botaoFecharPopup = documento.obterElementoPorId("close-popup");
+
+/* ----------------------------------------------------------------------- */
+// FUNÇÕES PRINCIPAIS
+
+funcao obterRefeicaoAleatoria() {
+  var resposta = requisitar(
+    "https://www.themealdb.com/api/json/v1/1/random.php"
+  );
+
+  var dadosResposta = resposta.json();
+  var refeicaoAleatoria = dadosResposta.refeicoes[0];
+
+  adicionarRefeicao(refeicaoAleatoria, verdadeiro);
+}
+
+funcao obterRefeicaoPorId(id) {
+  var resposta = requisitar(
+    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+  );
+  var dadosResposta = resposta.json();
+  var refeicao = dadosResposta.refeicoes[0];
+  retornar refeicao;
+}
+
+funcao obterRefeicoesPorTermo(termo) {
+  var resposta = requisitar(
+    `https://www.themealdb.com/api/json/v1/1/search.php?s=${termo}`
+  );
+
+  var dadosResposta = resposta.json();
+  var refeicoes = dadosResposta.refeicoes;
+  retornar refeicoes;
+}
+
+/* ----------------------------------------------------------------------- */
+// FUNÇÕES DE MANIPULAÇÃO DE REFEIÇÕES
+
+funcao adicionarRefeicao(dadosRefeicao, aleatoria = falso) {
+  var refeicao = documento.criarElemento("div");
+  refeicao.classeLista.adicionar("meal");
+
+  refeicao.innerHTML = `
+    <div class="meal-header">
+      ${aleatoria ? `<span class="random"> Receita Aleatória </span>` : ""}
+      <img src="${dadosRefeicao.strMealThumb}" alt="${dadosRefeicao.strMeal}" />
+    </div>
+    <div class="meal-body">
+      <h4>${dadosRefeicao.strMeal}</h4>
+      <button class="fav-btn"><i class="fa-solid fa-heart"></i></button>
+    </div>
+  `;
+
+  var botao = refeicao.selecionar(".meal-body .fav-btn");
+
+  botao.adicionarEvento("click", funcao(e) {
+    se (botao.classeLista.contem("active")) {
+      removerRefeicaoLocalStorage(dadosRefeicao.idMeal);
+      botao.classeLista.remover("active");
+    } senao {
+      adicionarRefeicaoLocalStorage(dadosRefeicao.idMeal);
+      botao.classeLista.adicionar("active");
+    }
+    buscarRefeicoesFavoritas();
+  });
+
+  refeicao.adicionarEvento("click", funcao() {
+    mostrarInfoRefeicao(dadosRefeicao);
+  });
+
+  refeicoesEl.anexarFilho(refeicao);
+}
+
+funcao adicionarRefeicaoFavorita(dadosRefeicao) {
+  var refeicaoFav = documento.criarElemento("li");
+
+  refeicaoFav.innerHTML = `
+    <img src="${dadosRefeicao.strMealThumb}" alt="${dadosRefeicao.strMeal}" />
+    <span>${dadosRefeicao.strMeal}</span>
+    <button class="clear"><i class="fa-solid fa-xmark"></i></button>
+  `;
+
+  var botao = refeicaoFav.selecionar(".clear");
+
+  botao.adicionarEvento("click", funcao() {
+    removerRefeicaoLocalStorage(dadosRefeicao.idMeal);
+    buscarRefeicoesFavoritas();
+  });
+
+  refeicaoFav.adicionarEvento("click", funcao() {
+    mostrarInfoRefeicao(dadosRefeicao);
+  });
+
+  favoritosContainer.anexarFilho(refeicaoFav);
+}
+
+/* ----------------------------------------------------------------------- */
+// FUNÇÕES DE LOCAL STORAGE
+
+funcao adicionarRefeicaoLocalStorage(idRefeicao) {
+  var idsRefeicoes = obterRefeicoesLocalStorage();
+  se (!idsRefeicoes.inclui(idRefeicao)) {
+    localStorage.definirItem("mealIds", JSON.stringificar([...idsRefeicoes, idRefeicao]));
+  }
+}
+
+funcao removerRefeicaoLocalStorage(idRefeicao) {
+  var idsRefeicoes = obterRefeicoesLocalStorage();
+  localStorage.definirItem(
+    "mealIds",
+    JSON.stringificar(idsRefeicoes.filtrar((id) => id !== idRefeicao))
+  );
+}
+
+funcao obterRefeicoesLocalStorage() {
+  var idsRefeicoes = JSON.analisar(localStorage.obterItem("mealIds"));
+  retornar idsRefeicoes === nulo ? [] : idsRefeicoes;
+}
+
+funcao buscarRefeicoesFavoritas() {
+  favoritosContainer.innerHTML = "";
+  var idsRefeicoes = obterRefeicoesLocalStorage();
+
+  para (var i = 0; i < idsRefeicoes.tamanho; i++) {
+    var idRefeicao = idsRefeicoes[i];
+    var refeicao = obterRefeicaoPorId(idRefeicao);
+    adicionarRefeicaoFavorita(refeicao);
+  }
+}
+
+/* ----------------------------------------------------------------------- */
+// FUNÇÕES DE POPUP
+
+funcao mostrarInfoRefeicao(dadosRefeicao) {
+  infoRefeicaoEl.innerHTML = "";
+  var elementoRefeicao = documento.criarElemento("div");
+
+  var ingredientes = [];
+  para (var i = 1; i <= 20; i++) {
+    se (dadosRefeicao["strIngredient" + i]) {
+      ingredientes.inserir(
+        `${dadosRefeicao["strIngredient" + i]} - ${dadosRefeicao["strMeasure" + i]}`
+      );
+    } senao {
+      parar;
+    }
+  }
+
+  elementoRefeicao.innerHTML = `
+    <h1>${dadosRefeicao.strMeal}</h1>
+    <img src="${dadosRefeicao.strMealThumb}" alt="${dadosRefeicao.strMeal}" />
+    <p>${dadosRefeicao.strInstructions}</p>
+    <h3>Ingredientes:</h3>
+    <ul>
+      ${ingredientes.mapear((ing) => `<li>${ing}</li>`).juntar("")}
+    </ul>
+  `;
+
+  infoRefeicaoEl.anexarFilho(elementoRefeicao);
+  popupRefeicao.classeLista.remover("hidden");
+}
+
+/* ----------------------------------------------------------------------- */
+// EVENTOS
+
+botaoPesquisa.adicionarEvento("click", funcao() {
+  refeicoesEl.innerHTML = "";
+  var pesquisa = termoPesquisa.valor;
+
+  var refeicoes = obterRefeicoesPorTermo(pesquisa);
+  se (refeicoes) {
+    refeicoes.paraCada((refeicao) => {
+      adicionarRefeicao(refeicao);
+    });
+  }
+});
+
+botaoFecharPopup.adicionarEvento("click", funcao() {
+  popupRefeicao.classeLista.adicionar("hidden");
+});
+
+/* ----------------------------------------------------------------------- */
+// INICIALIZAÇÃO
+obterRefeicaoAleatoria();
+buscarRefeicoesFavoritas();
