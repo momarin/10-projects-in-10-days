@@ -1,0 +1,78 @@
+/* Font Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
+
+/* ----------------------------------------------------- */
+/* GLOBAL RESET */
+* {
+    box-sizing: border-box;
+}
+:root {
+    --bg: #d3d0cb;
+    --textXg: #e2c044;
+    --hover: #9fb1bc;
+    --text: #2e5266;
+}
+/* ----------------------------------------------------- */
+body {
+    background-color: var(--bg);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+h1 {
+    color: var(--textXg);
+    font-size: 6rem;
+    text-align: center;
+}
+/* ----------------------------------------------------- */
+/* TEXT GROUP */
+.text-group {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    padding: 1rem;
+    color: var(--text);
+}
+/* ----------------------------------------------------- */
+/* FORM */
+form {
+    max-width: 100%;
+    width: 400px;
+    box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+.input {
+    font-size: 1.8rem;
+    padding: 1rem 2rem;
+    display: block;
+    width: 100%;
+    border: none;
+    color: var(--text);
+}
+.input::placeholder {
+    color: var(--text);
+}
+.todos {
+    /* background-color: #fff; */
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+.todos li {
+    border-top: 1px solid #fff;
+    font-size: 1rem;
+    padding: 1rem 1rem;
+    cursor: pointer;
+    background-color: #fff;
+    color: var(--text);
+}
+.todos li.completed {
+    text-decoration: line-through;
+    color: #b5b5b5;
+    background-color: var(--bg);
+}

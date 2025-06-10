@@ -1,0 +1,109 @@
+/* Font Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
+
+/* ----------------------------------------------------- */
+/* GLOBAL RESET */
+* {
+    box-sizing: border-box;
+}
+/* ----------------------------------------------------- */
+:root {
+    --bgApp: #1b1b1e;
+    --hover: #a9bcd0;
+    --textContent1: #d8dbe2;
+    --auxiliarColor1: #373f51;
+    --auxiliarColor2: #58a4b0;
+    --btn: #a9bcd0;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    /* background: linear-gradient(20deg, #5b9279, #12130f); */
+    background-color: var(--bgApp);
+}
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+header {
+    background-color: var(--auxiliarColor1);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+.search {
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    background-color: transparent;
+    border: 2px solid var(--auxiliarColor2);
+    color: var(--textContent1);
+    font-size: 1rem;
+}
+.search::placeholder {
+    color: var(--auxiliarColor2);
+    font-family: inherit;
+}
+.search:focus {
+    outline: none;
+}
+/* ----------------------------------------------------- */
+/* MOVIE */
+.movie {
+    background-color: var(--auxiliarColor1);
+    border-radius: 3px;
+    box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.2);
+    margin: 1rem;
+    overflow: hidden;
+    width: 300px;
+    color: var(--textContent1);
+    position: relative;
+}
+.movie img {
+    width: 100%;
+}
+.movie-info {
+    color: var(--textContent1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 1rem;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 1rem 1rem;
+}
+.movie-info h3 {
+    margin: 0;
+}
+.movie-info span {
+    background-color: var(--bgApp);
+    border-radius: 3px;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+}
+.movie-info span.green{
+    color: green;
+}
+.movie-info span.orange{
+    color: orange;
+}
+.movie-info span.red{
+    color: rgb(187, 66, 66);
+}
+.overview {
+    position: absolute;
+    max-height: 100%;
+    overflow: auto;
+    background-color: var(--bgApp);
+    padding: 2rem;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    transform: translateY(101%);
+    transition: transform 0.3s ease-in;
+}
+.overview h4 {
+    margin-top: 0;
+}
+.movie:hover .overview{
+    transform: translateY(0);
+}

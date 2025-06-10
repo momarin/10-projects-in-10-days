@@ -1,0 +1,84 @@
+// ESSE É O PSEUDOCÓDIGO DESTE PROJETO E POSSUI O ESTUDO COMO FINALIDADE EXCLUSIVA;
+
+/* ----------------------------------------------------------------------- */
+// CONFIGURAÇÕES INICIAIS
+variável CHAVE_API ← "7b58c21540537ddf08ae663041815eb7"
+variável URL_API ← "https://api.themoviedb.org/3"
+variável IDIOMA ← "pt-BR"
+variável REGIAO ← "BR"
+variável CAMINHO_IMAGEM ← "https://image.tmdb.org/t/p/w1280"
+
+// ELEMENTOS DA PÁGINA
+variável principal ← elemento com id "main"
+variável formulario ← elemento com id "form"
+variável campoBusca ← elemento com id "search"
+
+// CARREGA FILMES POPULARES AO INICIAR
+buscarFilmesPopulares()
+
+/* ----------------------------------------------------------------------- */
+// FUNÇÕES PRINCIPAIS
+
+// Busca filmes populares na API
+função buscarFilmesPopulares()
+    variável resposta ← buscar(URL_API + "/movie/popular?api_key=" + CHAVE_API + "&language=" + IDIOMA + "&region=" + REGIAO)
+    variável dados ← converterParaJSON(resposta)
+    mostrarFilmes(dados.results)
+fim função
+
+// Busca filmes por termo de pesquisa
+função buscarFilmesPorTermo(termo)
+    variável resposta ← buscar(URL_API + "/search/movie?api_key=" + CHAVE_API + "&language=" + IDIOMA + "&query=" + codificarURI(termo))
+    variável dados ← converterParaJSON(resposta)
+    mostrarFilmes(dados.results)
+fim função
+
+// Exibe os filmes na página
+função mostrarFilmes(filmes)
+    principal ← "" // Limpa o conteúdo
+    
+    para cada filme em filmes faça
+        variável elementoFilme ← criarElemento("div")
+        adicionarClasse(elementoFilme, "movie")
+        
+        elementoFilme.innerHTML ← `
+            <img src="${CAMINHO_IMAGEM + filme.poster_path}" alt="${filme.title}" />
+            <div class="movie-info">
+                <h3>${filme.title}</h3>
+                <span class="${obterClasseAvaliacao(filme.vote_average)}">${filme.vote_average}</span>
+            </div>
+            <div class="overview">
+                <h4>Sinopse: </h4>
+                ${filme.overview || "Sinopse não disponível"}
+            </div>
+        `
+        
+        adicionarElemento(principal, elementoFilme)
+    fim para
+fim função
+
+// Determina a classe CSS baseada na avaliação
+função obterClasseAvaliacao(nota)
+    se nota >= 8 então
+        retornar "green"
+    senão se nota >= 5 então
+        retornar "orange"
+    senão
+        retornar "red"
+    fim se
+fim função
+
+/* ----------------------------------------------------------------------- */
+// MANIPULAÇÃO DE EVENTOS
+
+// Evento de envio do formulário de busca
+ao evento "submit" de formulario faça
+    prevenirComportamentoPadrao()
+    
+    variável termo ← trim(campoBusca.value)
+    
+    se termo ≠ "" então
+        buscarFilmesPorTermo(termo)
+        campoBusca.value ← ""
+    fim se
+fim evento

@@ -1,0 +1,71 @@
+// Seleciona elementos principais
+variável formulario ← elemento com id "form"
+variável campoInput ← elemento com id "input"
+variável listaDeTarefas ← elemento com id "todos"
+
+// Carrega tarefas do localStorage, se houver
+para cada item em JSON.parse(pegarItem("todos") ou "[]") faça
+    adicionarTarefa(item)
+fim para
+
+// Evento para adicionar nova tarefa
+ao evento "submit" de formulario faça
+    prevenir comportamento padrão
+    adicionarTarefa()
+fim evento
+
+// Função para adicionar tarefa
+função adicionarTarefa(tarefa = nulo)
+    // Pega o texto da tarefa (ou do input)
+    variável texto ← se tarefa ≠ nulo então tarefa.texto senão campoInput.trim()
+
+    // Se estiver vazio, não faz nada
+    se texto = "" então
+        retornar
+    fim se
+
+    // Cria o item da lista
+    criar itemLista como elemento "li"
+    itemLista.texto ← texto
+
+    // Marca como completado, se necessário
+    se tarefa ≠ nulo e tarefa.completa = verdadeiro então
+        adicionar classe "completed" em itemLista
+    fim se
+
+    // Alterna o estado de completado
+    ao clicar em itemLista faça
+        alternar classe "completed"
+        atualizarLocalStorage()
+    fim evento
+
+    // Remove tarefa com clique direito
+    ao clicar com botão direito em itemLista faça
+        prevenir comportamento padrão
+        remover itemLista
+        atualizarLocalStorage()
+    fim evento
+
+    // Adiciona à lista e limpa o campo
+    adicionar itemLista na listaDeTarefas
+    campoInput ← ""
+    atualizarLocalStorage()
+fim função
+
+// Atualiza localStorage com as tarefas atuais
+função atualizarLocalStorage()
+    variável tarefas ← transformar cada item da listaDeTarefas em:
+        texto: item.texto
+        completa: item possui classe "completed"
+    fim transformar
+
+    salvarItem("todos", JSON.stringify(tarefas))
+fim função
+
+/*
+O que foi melhorado:
+    ♦ Removido código redundante (if (todos)) com valor padrão no JSON.parse.
+    ♦ trim() no input para evitar espaços em branco como tarefas.
+    ♦ Usado Array.from() para deixar o código mais moderno e limpo.
+    ♦ Removido comentário desnecessário.
+*/

@@ -1,0 +1,101 @@
+algoritmo "Gerenciador de Perfil GitHub"
+
+/* ----------------------------------------------------------------------- */
+// CONFIGURAÇÕES INICIAIS
+variável URL_API_GITHUB ← "https://api.github.com/users/"
+
+// ELEMENTOS DA PÁGINA
+variável containerPrincipal ← elemento com id "main"
+variável formularioBusca ← elemento com id "form"
+variável campoBusca ← elemento com id "search"
+
+/* ----------------------------------------------------------------------- */
+// INICIALIZAÇÃO
+buscarPerfilUsuario("momarin")
+
+/* ----------------------------------------------------------------------- */
+// FUNÇÕES PRINCIPAIS
+
+função buscarPerfilUsuario(nomeUsuario)
+    tentar
+        variável resposta ← buscar(URL_API_GITHUB + nomeUsuario)
+        variável dadosUsuario ← converterParaJSON(resposta)
+        
+        se resposta.erro então
+            lançar erro dadosUsuario.mensagem ou "Usuário não encontrado"
+        fim se
+        
+        exibirPerfilUsuario(dadosUsuario)
+        buscarRepositoriosUsuario(nomeUsuario)
+    capturar erro
+        exibirMensagemErro(erro.mensagem)
+    fim tentar
+fim função
+
+função buscarRepositoriosUsuario(nomeUsuario)
+    tentar
+        variável resposta ← buscar(URL_API_GITHUB + nomeUsuario + "/repos")
+        variável dadosRepositorios ← converterParaJSON(resposta)
+        
+        se tamanho(dadosRepositorios) > 0 então
+            exibirRepositoriosUsuario(dadosRepositorios)
+        fim se
+    capturar erro
+        registrarErro("Falha ao carregar repositórios:", erro)
+    fim tentar
+fim função
+
+/* ----------------------------------------------------------------------- */
+// FUNÇÕES DE EXIBIÇÃO
+
+função exibirPerfilUsuario(usuario)
+    variável htmlCartao ← `
+        <div class="card">
+            <!-- Estrutura do cartão de perfil -->
+            <div id="container-repositorios"></div>
+        </div>
+    `
+    
+    containerPrincipal.innerHTML ← htmlCartao
+fim função
+
+função exibirRepositoriosUsuario(repositorios)
+    variável containerRepos ← elemento com id "container-repositorios"
+    
+    // Ordena por estrelas e pega os 10 primeiros
+    repositorios.ordenar((a, b) → b.estrelas - a.estrelas)
+    repositorios.cortar(0, 10)
+    
+    para cada repo em repositorios faça
+        variável linkRepo ← criarElemento("a")
+        linkRepo.className ← "repo-link"
+        linkRepo.href ← repo.url
+        linkRepo.target ← "_blank"
+        linkRepo.texto ← repo.nome
+        
+        containerRepos.adicionarFilho(linkRepo)
+    fim para
+fim função
+
+função exibirMensagemErro(mensagem)
+    containerPrincipal.innerHTML ← `
+        <div class="error-card">
+            <h2>Erro</h2>
+            <p>${mensagem}</p>
+        </div>
+    `
+fim função
+
+/* ----------------------------------------------------------------------- */
+// EVENTOS
+
+ao submeter formularioBusca faça
+    prevenirComportamentoPadrao()
+    variável nomeUsuario ← trim(campoBusca.valor)
+    
+    se nomeUsuario ≠ "" então
+        buscarPerfilUsuario(nomeUsuario)
+        campoBusca.valor ← ""
+        campoBusca.focar()
+    fim se
+fim evento
