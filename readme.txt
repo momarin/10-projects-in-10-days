@@ -56,9 +56,9 @@
         ● size;
         ● color;
         ● https://www.w3schools.com/graphics/canvas_circles.asp
-            - beginPath() - Begin a path
-            - arc() - Define a circle
-            - stroke() - Draw it
+            □ beginPath() - Begin a path
+            □ arc() - Define a circle
+            □ stroke() - Draw it
 
     9. 🔑 Password Generator:
         ● numbers;
